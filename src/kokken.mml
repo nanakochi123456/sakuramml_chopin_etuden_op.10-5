@@ -1,0 +1,706 @@
+// 黒鍵のエチュード
+// Etuden Op.10-5
+/////////////////////////////////////////////////////////////////////////////////////////
+// 各種設定らしきもの
+Int MSGS=0
+Int TWM2=0
+Int TIMIDITY=0
+Int BRIGHT=0
+Int LOOP=2
+
+Int KEY=0
+Int TEMPORATIO=100
+Int TEMPODIFF=0
+// Base Tempo=116
+Int IGNORETEMPO=0
+Int TINY=0
+Int GAKUHU=0
+//Int DEBUG=1
+//Mute(1,2,3)
+// ↑上2行のコメント外すと、メトロノームだけが鳴るなの。どうやって使うかは秘密なの。ぐすぐす；；
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+拍子 2,4
+
+IF(KEY %12 = 1 || KEY % 12 = 6 || KEY % 12 = -11 || KEY % 12 = -6) {
+	曲名{"白鍵のエチュード Etuden Op.10-5"}
+} ELSE {
+	曲名{"黒鍵のエチュード Etuden Op.10-5"}
+}
+作者{"Fryderyk Franciszek Chopin MML by ななこっち★"}
+
+IF(MSGS=1 || TWM2=1) {
+	ResetGS
+}
+#METORONOMEMML={M8m8m8m8}
+
+IF(TINY=1 || GAKUHU=1 || TWM2=1) {
+	Expression.Frequency(2);
+	Modulation.Frequency(8);
+	System.TimeBase=96
+} ELSE {
+	Expression.Frequency(1);
+	Modulation.Frequency(1);
+	System.TimeBase=3072
+}
+
+#PEDALON={Sub {r64y64,127}}
+#PEDALOFF={r-36 y64,0 r36}
+
+Include(tempo.h)
+Include(rchord.h)
+Include(rmelody.h)
+Include(loop.h)
+
+IF(GAKUHU=1) {
+	RCDINIT(0,0)
+} ELSE {
+	RCDINIT(370,856)
+}
+
+Key(KEY)
+Int QTemp
+Function QSet(value) {
+	QTemp=value
+}
+
+Function Q(value) {
+	Str MML="q"
+	IF(GAKUHU=1) {
+		MML=MML+"100"
+	} ELSE {
+		MML=MML+(value * QTemp / 100)
+	}
+	MML
+}
+
+#V_PIANO={
+	#REV
+	V(100)
+	M(0)
+	IF(BRIGHT=1) {
+		@(BrightPiano)
+	} ELSE {
+		@(GrandPiano)
+	}
+	QSet(100)
+}
+
+// Tempo
+
+TR(16)
+	// 1
+	TmpChangeR(116,0)
+	[6 r2]
+
+// loop start
+	#tempoloop={
+		TmpChangeR(110,!2)
+		TmpChangeR(92,!2)
+		TmpChangeR(110,0)
+		TmpChangeR(119,!4)
+		r4
+		[4 r2]
+		TmpChangeR(112,!1)
+		TmpChangeR(105,!2)
+
+		// 2
+		TmpChangeR(100,0)
+		TmpChangeR(110,!2)
+		TmpChangeR(105,!2)
+		TmpChangeR(120,0)
+		TmpChangeR(123,!2)
+		TmpChangeR(117,!2)
+		TmpChangeR(100,0)
+		TmpChangeR(105,!4)
+		TmpChangeR(110,!4)
+		TmpChangeR(105,!2)
+
+		TmpChangeR(100,0)
+		TmpChangeR(107,!2^2)
+		TmpChangeR(115,!2^2^2^2)
+		TmpChangeR(123,!2^2^8)
+		TmpChangeR(95,!4.^2)
+
+		[
+			TmpChangeR(116,0)
+			TmpChangeR(113,!2)
+			TmpChangeR(100,!2)
+			TmpChangeR(116,0)
+			[2 r2]
+		]
+
+		TmpChangeR(105,0)
+		TmpChangeR(108,!1)
+		TmpChangeR(105,!1)
+
+		TmpChangeR(108,0)
+		TmpChangeR(113,!2)
+		TmpChangeR(108,!2)
+		TmpChangeR(90,!2)
+		TmpChangeR(70,!2)
+
+		// 3
+		TmpChangeR(105,0)
+		TmpChangeR(116,!4)
+		r4
+		[5 r2]
+	}
+// loop end
+	LoopPlay(#tempoloop,0)
+
+	TmpChangeR(112,!2^2)
+	TmpChangeR(118,!2^2)
+	[4 r2]
+	TmpChangeR(110,!2)
+	TmpChangeR(85,!2)
+	TmpChangeR(35,0)
+	r24
+	TmpChangeR(80,0)
+	r12
+	TmpChangeR(100,!4.)
+	TmpChangeR(90,0)
+	r2
+	TmpChangeR(116,0)
+	[5 r2]
+	TmpChangeR(125,!2^2^2)
+	[3 r2]
+	TmpChangeR(127,!2)
+
+	TmpChangeR(110,0)
+	TmpChangeR(127,!2^2)
+	TmpChangeR(110,!2^2)
+	TmpChangeR(80,0)
+	r12
+	TmpChangeR(60,0)
+	r12
+	TmpChangeR(80,0)
+	TmpChangeR(90,!4.)
+	TmpChangeR(67,!12)
+
+// pedal part
+#p1={
+	[
+		[1 r2]
+		[1 #PEDALON r8. #PEDALOFF r16r4]
+		[4 #PEDALON r8. #PEDALOFF r16]
+		[1 r2]
+		[1 #PEDALON r8. #PEDALOFF r16r4]
+		[2 #PEDALON r2 #PEDALOFF]
+	]
+}
+
+	//
+#p2={
+	[4 #PEDALON r8. #PEDALOFF r16]
+	[4 #PEDALON r8. #PEDALOFF r16]
+	[4 #PEDALON r8. #PEDALOFF r16]
+//	[1 #PEDALON r4 #PEDALOFF r4]
+//	[1 r2]
+	[1 #PEDALON r2 r2 #PEDALOFF]
+	[2 #PEDALON r4 #PEDALOFF #PEDALON r8 #PEDALOFF #PEDALON r8 #PEDALOFF]
+	[2 #PEDALON r2 #PEDALOFF]
+	[2 #PEDALON r4 #PEDALOFF r4]
+	[2 #PEDALON r4 #PEDALOFF]
+	[1 #PEDALON r2 #PEDALOFF]
+	[2 #PEDALON r2 r2 #PEDALOFF]
+
+	[2 #PEDALON r2 r4 #PEDALOFF #PEDALON r4 #PEDALOFF]
+	[2 #PEDALON r2 r4 #PEDALOFF #PEDALON r8. #PEDALOFF #PEDALON r16 #PEDALOFF]
+
+	[4 #PEDALON r8 #PEDALOFF]
+	[1 #PEDALON r4 #PEDALOFF]
+	[2 #PEDALON r8 #PEDALOFF]
+	[1 #PEDALON r4. #PEDALOFF]
+	[1 #PEDALON r8 #PEDALOFF]
+	[1 #PEDALON r4. #PEDALOFF r8]
+}
+	//
+#p3={
+	[
+		[1 r2]
+		[1 #PEDALON r8. #PEDALOFF r16r4]
+		[4 #PEDALON r8. #PEDALOFF r16]
+	]
+	[8 #PEDALON r8. #PEDALOFF r16]
+	[2 #PEDALON r2 #PEDALOFF]
+	[1 #PEDALON r2 r2 #PEDALOFF]
+	[1 #PEDALON r2 #PEDALOFF]
+	[2 #PEDALON r4 #PEDALOFF]
+
+	[4 #PEDALON r8 #PEDALOFF r8]
+	r4
+	[3 #PEDALON r8 #PEDALOFF r8]
+	[8 #PEDALON r8 #PEDALOFF r8]
+
+	[2 #PEDALON r4 #PEDALOFF r8 #PEDALON r8 #PEDALOFF]
+	[1 #PEDALON r4 #PEDALOFF r8]
+	[5 #PEDALON r24 #PEDALOFF r24r24]
+	r8
+	[15 #PEDALON r8 #PEDALOFF]
+	#PEDALON r2 #PEDALOFF
+	#PEDALON r1 #PEDALOFF
+
+}
+
+
+#m1={
+	l24
+
+	[
+		RMDV(95,100)
+		[RMD(g-b-d-g-e-g- d-g-<b->d-<g-b-)]
+		RMD(d->d-<a->d-<a->a-<a->a-e-a-e->e-<)
+		RMD(e->e-<a->e-<a->a-<a->a-d-a-d->d-<)
+		[RMD(g-b-d-g-e-g- d-g-<b->d-<g-b-)]
+		:
+		RMD(e->e-<a->e-<a->a-e-a-e->e-<a->a-<)
+		[6 RMDV(-5) RMD(b->b-<) ]>
+	]
+	RMD(e->e-<a->e-<a->a- e-a-e->e-<a->e-<)
+	RMD(e->e-<a->e-<d->d- <a->d-<a->a-d->d-<)
+}
+
+#m2={
+	l24
+	[
+		RMD(a-b-a-e->e-<e- d-e-d-<a->a-<a-)
+		RMD(a-b-a-e->e-<e- d-e-d-<a-8^24)
+		:
+		>RMD(e-a-b-a-e- d-a->d-e-d-<b-)
+		RMD(a->e-a-b-a-e- d-a->d-e-d-<b-)
+		RMDV(-3)
+	]
+	>RMD(a-g-a-g-a- >g-<a-g-a-g-a-)
+	<RMD(a->a-g-a-g-a->g-<a-g-a-g-a-)
+	[RMD(<b->b-g-b-g-b->g-<b-g-b-g-b-)]
+	RMD(g-b-g- >b-<b-g- >a-<b-g- >g-<b-g-)
+	RMD(>d-<b-g- >b-<b-g- >a-<b-g- >g-<b-g-)
+
+	[RMD(d->d-<b->d-d->d- <b->d-<d-d-<b->d-<)]
+	RMD(d->d-<b->d-d->d- <a->d-<d-d-<a->d-<)
+	RMD(d->d-<g->d-<d-d-<g->d-<d-d-<g->d-<)
+
+	RMD(e-g->d- e-<g->d- e-g-d- e-g->d-<)
+	RMD(e-g->d- e-<g->d- e-g-d- e->d-<g-)
+	RMD(e-g->e- d-<g-e-> d-<g-e- d-g-e-)
+	RMD(d-<g->e- d-<g-e-> d-<g-e- d-g-e-)
+
+	RMD(<a->e-g- a-e-g- a->e-<g- a->e-g-)
+	RMD(<a->e-g- a-e-g- a->e-<g- a->g-e-)
+	RMD(a-g->e-< a-g-e- a-g-e- <a->g-e-<)
+	RMD(a-g->e-< a-g-e- a-g-e- <a->g-e-<)
+
+	[RMD(d->d-<a-> d-<a->a- d-a-<a- >d-<a->d-<)]
+	RMD(d->d-<a-> d-d->d- <a->d-<d- d-<a->d-<)
+	RMD(a->a-d- a-a->a- d-a-<a- a-d-a-)
+
+	[RMD(d-e-d- >e-d->e- d-e-d- <d-e-d-<)]>
+	[4 RMD(>d-e-d-< d-e-d-)]
+}
+
+#m3={
+	[RMD(g-b-d-g-e-g- d-g-<b->d-<g-b-)]
+	RMD(d->d-<a->d-<a->a-<a->a-e-a-e->e-<)
+	RMD(e->e-<a->e-<a->a-<a->a-d-a-d->d-<)
+	[RMD(g-b-d-g-e-g- d-g-<b->d-<g-b-)]
+	[RMD(e->e-<a->e-<a->a-<) [3 RMD(b->b-<)]>]<
+
+	[
+		RMD(b->b-e- b-<a->a- <a->a-d- a-<g->g-<)
+		RMD(d->d-<a- >d-<a->a- <g->g-d- g-d->d-<<)
+	]
+
+	[4 RMD(b->b-e- b-<a->a-<)]>
+	[RMD(d-b-<a- >a-d-b- <a->a-d- b-<a->a-)]
+
+	RMD(>e-d-<b- a-g-e- d-<b-a- g-e-d-)
+	RMD(<a-4 b-8.a-16)
+
+	RMD(g-8r8 >> a-b-a-d->d-<d-)
+	RMD(d-e-d- <g->g-<g- a-b-a- d-8^)
+	RMD(g-a- b-a-g- d-a->d- e-d-<a-)
+	RMD(g->d-g- a-g-e- d-a->d- e-d-<a-)
+
+	RMD(g-a-g- d->d-<d- d-e-d- <a->a-<a-)
+	RMD(a-b-a- g->g-<g- d-4^)
+	RMD(g-a- b-a-g- d-a->d- e-d-<a-)
+	RMD(g->d-g- a-g-e- <a->d-a- b-a-d-)
+	RMDV(-15)
+	[3 RMD(b-d-a- <b->a-d- g-<b->e- <a->d-<d-)]
+	[RMD(b-g->e- <d->d-<a-)]
+
+	Sub{
+		Q(50)RMD(b-8)
+		RMDV(15)
+		Q(95)>RMD(d-8g-8b-8>d-8g-8b-8>d-8)
+		[4 RMD(g-8b-8)]
+	}
+	<<<
+	r8 RMD(b-a-g- >e-d-<b-> g-e-d-)
+	RMD(b-a-g- >e-d-<b-> g-e-d- b-a-g->)
+	[4 RMD(e-d-<b-> g-e-d-)]
+
+	RCD(<b->g-) <r v118 RCD(g->g-<)
+	RCD(e->e-<) RCD(d->d-<) RCD(<b->b-) RCD(<a->a-) RCD(<g->g-) RCD(<e->e-) RCD(<d->d-) < RCD(<b->b-) RCD(<a->a-)
+	l8 RCD(<g-8>g-8)r8
+	>
+	v123
+	l4 RCD(b-4>d-4g-4b-4<)
+	<
+	RMDV(125,127)
+	<RMD(g-2)
+	v0g-2
+}
+
+#bdg={RCD(b->d-g-<)}
+#ceg={RCD(>c-e-g-<)}
+#adf={RCD(a->d-f<)}
+#ace={RCD(a->c-e-<)}
+#acd={RCD(a->c-d-<)}
+#fd={RCD(f>d<)}
+#af={RCD(a->f<)}
+#ga={RCD(>g-a-<)}
+#fb={RCD(>fb-<)}
+#fa={RCD(>fa-<)}
+#gb={RCD(>g-b-<)}
+#df={RCD(>d-f<)}
+#aeg={RCD(a->e-g-<)}
+//#adfm={RCD(a->d-f-<)}
+#acg={RCD(a->cg-<)}
+#bdg={RCD(b->d-g-<)}
+#bg={RCD(b->g-<)}
+#bdf={RCD(b->d-f<)}
+#bdfm={RCD(b->d-f-<)}
+#gdfm={RCD(g>d-f-<)}
+#ameg={RCD(a>e-g-<)}
+#adg={RCD(a->d-g-<)}
+#acga={RCD(a->cg-a-<)}
+#ge={RCD(g>e<)}
+#cdf={RCD(>c-d-f<)}
+#ae={RCD(a->e-<)}
+#fbd={RCD(fb->d<)}
+
+#chord1={
+	l8
+	[
+		[
+			#bdg #ceg #bdg r
+			r #ceg #bdg r
+			:
+			r #adf #ace r
+			r #ace #acd r
+		]
+		l4
+		r8 #ae r8
+		:
+		l8 #fd >#fd <r4
+	]
+	r8 l8 #af r4
+
+}
+
+#chord2={
+	l8
+	#ga #ga #fb #fa
+	#gb #ga #df r
+	r #aeg #adf r
+	r #acg r #adf
+
+	r #ga #fb #fa
+	#gb #ga #df r
+
+	v100
+	[r #aeg rr]
+	r #bdg rr
+	[3 r #bg rr]
+	r #bdf rr
+	r #bdfm rr
+	r #gdfm r #adf
+	r #ameg rr
+
+	v110
+	r2
+	r4 l8.#adg l16 #adg
+	l2 #adg
+	r2
+	r2
+	r4 l8.#acga l16 #acga
+	l2 #acga
+	r2
+
+	v110
+	[
+		r4 l2 #af
+		l8. #ge l16 #af
+	]
+	Q(90)
+	Sub {
+		RMDV(115,124)
+		r8 l8 >RMD(f g- g a-4 g g- f)
+		RMDV(119,126)
+		r RMD(a-b->c-4<b-8a-8)<
+	}
+	v90
+	r8 l8 RCD(a->d-<) RCD(a>d-<) RCD(b->d-<)
+	l4 RCD(>c-d-<) l8 RCD(b->d-<) RCD(a>d-<)
+	RCD(a->d-) rrr<
+	r4r8r8
+	Q(55)
+}
+
+#subchord2={
+	l8
+	>c<a->d-<a->
+	c<a->d-<a->
+	r2
+	r2
+	r<a->d-<a->
+	c<a->d-<a->
+	[24 r2]
+	<
+	rr l4 #cdf
+	l2 #cdf
+}
+
+#chord3={
+	l8
+	[
+		#bdg #ceg #bdg r
+		r #ceg #bdg r
+		:
+		r #adf #ace r
+		r #ace #acd r
+	]
+	[r #ae #fbd r]
+
+#cdfa={RCD(>c-d-fa-<)}
+#bdgb={RCD(b->d-g-b-<)}
+#cea={RCD(>c-e-a-<)}
+#bdg={RCD(b->d-g-<)}
+#aea={RCD(a->e-a-<)}
+#aega={RCD(a->e-g-a-<)}
+#adga={RCD(a->d-g-a-<)}
+#gad={RCD(>g-a->d-<<)}
+#dadg={RCD(d-a->d-g-<)}
+#dac={RCD(d-a->c-<)}
+
+	//--
+	[
+		r #cea r #bdg
+		r #cdfa r #bdgb
+	]
+	l4 r8 #aea r8
+	l4 r8 #aega r8
+	r4 #adga
+	#gad r4
+	Sub{r32 #dadg } r2
+	l2 #dac
+
+#bg={RCD(b->g-<)}
+#ca={RCD(>c-a-<)}
+#af={RCD(a->f<)}
+#fce={RCD(f>c-e-<)}
+#dd={RCD(d->d-<)}
+#gbe={RCD(g-b->e-<)}
+#acf={RCD(a->c-f<)}
+#mdad={RCD(<d-a->d-)}
+#mgbg={RCD(<g-b->g-)}
+#gdb={RCD(g->d-b-<)}
+#db={RCD(>d-b-<)}
+#cf={RCD(>c-f<)}
+#bg={RCD(b->g-<)}
+	//--
+	l8
+	[#bg d- #ca #af]
+	#bg r #fce #dd
+	#gbe #dd #fce #dd
+
+	[#bg d- #ca #af]
+	#bg >d-< #fce #dd
+	#gbe #dd #fce #dd
+
+	l4 #db r8 l8 #acf
+	l4 #bg r8 l8 #cf
+	l4 #bg r4
+	r2
+	//--
+	r4.
+	l24
+	<
+	RMDV(95,102)
+	RMD(g->d-b-<)
+	RMD(g->d-b-<)
+	RMD(b->g->d-<<)
+	RMD(>d-b->g-<)
+	RMD(g->d-b-<)
+	RMD(b->g->d-<<)
+	RMD(>d-b->g-<)
+	[3
+		RMD(g->d-b-<)
+		RMD(d-b->g-<)
+	]
+	l24
+	RMDV(100,110)
+	RMD(g-r g- e-d-<b- a-g-e- d-<b-a-)
+	RMD(g-8) r8 l4 #gdb
+}
+
+#bass1={
+	l8
+	[
+		RMD(g-g-g-r)
+		RCD(<g->g-)rrr
+		RCD(<d->d-)rr<RMD(a-)>
+		RMD(d-4.)r
+
+		RMD(g-g-g-r)
+		RCD(<g->g-)rrr
+		:
+		RMD(c-rrc-)
+		RMD(<b->b-r4)
+	]
+	RMD(crr<a->)
+	RMD(d-rrr)
+}
+
+#bass2={
+	r2
+	r2
+	RMD(crrd-)<
+	RMD(a-rd-r)
+	RMD(a-)rrr
+	rrrr>
+
+	RMD(c)rr<RMD(c)>
+	RMDV(110,120)
+	RMD(c)rr RCD(<c>c)
+	RCD(<d->d-)r RCD(<c>c) RCD(<d->d-)
+	RMDV(112,120)
+	RCD(<d>d)r RCD(<c#>c#) RCD(<d>d)
+	RCD(<e->e-) rr RCD(<e->e-)
+	RCD(<e>e)rr RCD(<e>e)
+	RMDV(115,120)
+	RCD(<f>f)r RCD(<e>e) RCD(<f>f)
+	RCD(<g->g-)r RCD(<f>f) RCD(<g->g-)
+	RCD(<g>g) r RCD(<a->a-) r
+	RCD(<a>a)rr < RCD(<a>a)
+
+	[
+		l2 RCD(<a-2>a-2)
+		r2
+		r2
+		r2
+	]
+	RMDV(110,115)
+	l8
+	RMD(d-)rrr
+	r2>
+	RMD(d-)rrr
+	r2
+	RMD(d-)rrr
+	r2
+	rRMD(d-)rr
+	r2
+}
+
+#bass3={
+	l8
+	RMD(g-g-g-r)
+	RCD(<g->g-)rrr
+	RCD(<d->d-)rr<RMD(a-)>
+	RMD(d-4.)r
+
+	RMD(g-g-g-r)
+	RCD(<g->g-) rrr
+	[RMD(c-)rr<RMD(b-)>]
+
+	RMDV(80,95)
+	[
+		RMD(c-rd-r)
+		RMD(c-r<b-r>)
+	]
+	RMDV(85,100)
+	RMD(c-rrc-)
+	RMD(crrc)
+	RMD(d-4)r4
+	r2<
+	RMD(d-2)
+	r2
+	>
+	[
+		[RMD(g-2)]
+		[RMD(g-8r8 d-8r8)]
+	]
+	l8
+	RMDV(85,100)
+	RMD(g-4rd-)
+	RMD(g-4r)
+	RMDV(-3)
+	RMD(<d-)
+	RMD(g-4rd-)
+	[RCD(<g->g-) RMD(d-)]
+	RCD(<g->g-) rrr
+	RMDV(3)
+	[3 r2]
+	l24
+	RMDV(100,110)
+	rr> RMD(g- e-d-<b- a-g-e- d-<b-a-)
+
+	l8
+	RMDV(110,120)
+	RCD(g->g-)> r4.
+	RMDV(127,127)
+	RCD(<<g-2>g-2>)
+
+}
+
+TR(1)
+	o7
+	#V_PIANO
+	Q(70)v110
+	RMDINIT(270,856,95,100)
+	#tr1={
+		RMDV(95,100)
+		Sub{#p1}
+		#m1
+		Sub{#p2}
+		#m2
+	}
+	LoopPlay(#tr1,0)
+
+	RMDV(95,100)
+	Sub{#p3}
+	#m3
+
+TR(2)
+	o4
+	#V_PIANO
+	#tr2={
+		Q(55)v90
+		Sub{#p1}
+		#chord1
+		Sub{#p2}
+		Sub{#subchord2}
+		Q(40)
+		#chord2
+	}
+	LoopPlay(#tr2,0)
+	Q(55)
+	Sub{#p3}
+	#chord3
+
+TR(3)
+	o4
+	#V_PIANO
+	Q(95)v115
+	RMDINIT(270,856,100,110)
+	#tr3={
+		Sub{#p1}
+		#bass1
+		Sub{#p2}
+		#bass2
+	}
+	LoopPlay(#tr3,0)
+	Sub{#p3}
+	#bass3
